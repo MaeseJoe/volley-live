@@ -1,0 +1,7 @@
+server:
+  port: 8081
+spring:
+  application:
+    name: match-simulator
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
