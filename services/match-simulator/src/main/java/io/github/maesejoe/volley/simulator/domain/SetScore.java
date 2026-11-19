@@ -21,4 +21,11 @@ public record SetScore(int home, int away) {
             case AWAY -> new SetScore(home, away + 1);
         };
     }
+
+    public Team winner(int target) {
+        if(isOver(target)) {
+            return home > away ? Team.HOME : Team.AWAY;
+        }
+        throw new IllegalStateException(String.format("Set not over: %s - %s, target %s", home, away, target));
+    }
 }

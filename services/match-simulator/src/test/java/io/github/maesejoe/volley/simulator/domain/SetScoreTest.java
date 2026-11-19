@@ -59,4 +59,39 @@ class SetScoreTest {
         assertThat(newHomeScore).isEqualTo(new SetScore(13, 16));
         assertThat(newAwayScore).isEqualTo(new SetScore(12, 17));
     }
+
+    @ParameterizedTest
+    @CsvSource({
+            "25, 25, 20, HOME",
+            "25, 15, 25, AWAY",
+            "25, 28, 26, HOME",
+            "25, 27, 29, AWAY",
+            "15, 15, 13, HOME",
+            "15, 10, 15, AWAY",
+            "15, 17, 15, HOME",
+            "15, 14, 16, AWAY",
+    })
+    void winnerIsTheTeamWithMoreTotalPointsWhenSetIsOver(int target, int home, int away, Team team) {
+        var setScore = new SetScore(home, away);
+
+        var winner = setScore.winner(target);
+
+        assertThat(winner).isEqualTo(team);
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "25, 15, 20",
+            "25, 15, 10",
+            "25, 25, 24",
+            "25, 24, 25",
+            "15, 11, 13",
+            "15, 10, 7",
+            "15, 15, 14",
+            "15, 14, 15",
+    })
+    void winnerIsRejectedWhenSetIsNotOver(int target, int home, int away) {
+        assertThatThrownBy(() -> new SetScore(home, away).winner(target))
+                .isInstanceOf(IllegalStateException.class);
+    }
 }
